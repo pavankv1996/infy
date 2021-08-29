@@ -1,0 +1,159 @@
+package solution;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.List;
+import org.apache.commons.io.FileUtils;
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.openqa.selenium.By;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.ui.Select;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
+
+public class Submit {
+
+WebDriver driver = null;
+
+@BeforeClass
+public void init() throws InterruptedException
+{
+ System.setProperty("webdriver.gecko.driver", "/home/user/Desktop/geckodriver");
+ driver = new FirefoxDriver();
+ driver.manage().window().maximize();
+ Thread.sleep(2000);
+ driver.get("http:localhost:8080/application/");
+}
+
+@Test()
+public void filllog() throws InterruptedException, IOException
+{
+	String info = driver.getTitle();
+	System.out.println("INFO " +info);
+	Thread.sleep(2000);
+	List<WebElement> links = driver.findElements(By.tagName("a"));
+	System.out.println("Number of hyperlinks:" + links.size());
+	if(driver.getPageSource().contains("Movies in the city"))
+	{
+  	  System.out.println("Movies in the city is present on the home page");
+	}
+	else
+	{
+  	  System.out.println("Movies in the city not present on the home page");
+	}
+	driver.findElement(By.id("offersLink")).click();
+	Thread.sleep(2000);
+	File file = new File("/home/user/Desktop/user_repo/To_Participant/AdditionalSuppliedFiles/Data.xls");
+   		  FileInputStream fis = new FileInputStream(file);
+   		 HSSFWorkbook book = new HSSFWorkbook (fis);
+   		 HSSFSheet sheet = book.getSheet ("Sheet1");
+
+   		 int size = sheet.getLastRowNum();
+   		 for(int i=1; i<size; i++)
+   		 {
+   		 String Offers = sheet.getRow (1).getCell (0).getStringCellValue();
+   		 String Offers1 = sheet.getRow (2).getCell (0).getStringCellValue();
+   		 /*String email = sheet.getRow(1).getCell(1).getStringCellValue();
+   		 String mobile = sheet.getRow (1).getCell(2).getStringCellValue();
+
+   		 String ddindex = sheet.getRow(1).getCell (3).getStringCellValue();
+
+   		 String addr = sheet.getRow (1).getCell(4).getStringCellValue();*/
+        	//driver.findElement(By.id("sample")).sendKeys(email);
+   		 
+   				 WebElement dropdown1= driver.findElement(By.id("offersDropdown"));
+   			 	Select select1 = new Select(dropdown1);
+   			 	select1.selectByVisibleText(Offers);
+   			 	Thread.sleep(2000);
+   				 
+   			 	WebElement dropdown2= driver.findElement(By.id("offersDropdown"));
+   			 	Select select2 = new Select(dropdown2);
+   			 	select2.selectByVisibleText(Offers1);
+   			 	Thread.sleep(2000);
+   		 }
+	WebElement dropdown1= driver.findElement(By.id("offersDropdown"));
+	Select select1 = new Select(dropdown1);
+	select1.selectByVisibleText("Credit Card offers");
+	Thread.sleep(2000);
+	WebElement getRows = driver.findElement(By.xpath("//table[@id='creditCardsTable']/tbody"));
+	List<WebElement> TotalRowsList = getRows.findElements(By.tagName("tr"));
+	System.out.println("Number of Rows in the table are : " + TotalRowsList.size());
+    
+	Thread.sleep(2000);
+	WebElement dropdown2= driver.findElement(By.id("offersDropdown"));
+	Select select2 = new Select(dropdown2);
+	select2.selectByVisibleText("Debit Card offers");
+	Thread.sleep(2000);
+	WebElement getRows1 = driver.findElement(By.xpath("//table[@id='debitCardsTable']/tbody"));
+	List<WebElement> TotalRowsList1 = getRows1.findElements(By.tagName("tr"));
+	System.out.println("Number of Rows in the table are : " + TotalRowsList1.size());
+    
+    
+	File file1 =    new File("/home/user/Desktop/user_repo/To_Participant/AdditionalSuppliedFiles/Data.xls");
+    
+	 //Create an object of FileInputStream class to read excel file
+	 FileInputStream inputStream = new FileInputStream(file1);
+    
+	 //creating workbook instance that refers to .xls file
+	 HSSFWorkbook wb=new HSSFWorkbook(inputStream);
+    
+	 //creating a Sheet object
+	 HSSFSheet sheet1=wb.getSheet("Sheet1");
+    
+	 //get all rows in the sheet
+	 int rowCount=sheet1.getLastRowNum()-sheet1.getFirstRowNum();
+    
+	 //iterate over all the rows in Excel and put data in the form.
+	 for(int i=1;i<=rowCount;i++) {
+		 //Enter the values read from Excel in firstname,lastname,mobile,email,address
+
+   	 
+		 //Verify the confirmation message
+   	  WebElement getRows11 = driver.findElement(By.xpath("//table[@id='creditCardsTable']/tbody"));
+   	  List<WebElement> TotalRowsList11 = getRows11.findElements(By.tagName("tr"));
+   	  System.out.println("Number of Rows in the table are : " + TotalRowsList11.size());
+   	 
+   	  WebElement getRows111 = driver.findElement(By.xpath("//table[@id='debitCardsTable']/tbody"));
+  	  List<WebElement> TotalRowsList111 = getRows111.findElements(By.tagName("tr"));
+  	  System.out.println("Number of Rows in the table are : " + TotalRowsList111.size());
+   	 
+		 //create a new cell in the row at index 6
+		 HSSFCell cell = sheet1.getRow(i).createCell(1);
+   	 
+		 // if the message is displayed , write PASS in the excel sheet
+  		  cell.setCellValue(TotalRowsList111.size());
+  		 
+  		   //create a new cell in the row at index 6
+    		 HSSFCell cell1 = sheet1.getRow(i).createCell(2);
+   		 
+    		 // if the message is displayed , write PASS in the excel sheet
+  			  cell1.setCellValue(TotalRowsList111.size());
+   	 
+		 // Write the data back in the Excel file
+		 FileOutputStream outputStream = new FileOutputStream("/home/user/Desktop/user_repo/To_Participant/AdditionalSuppliedFiles/Data.xls");
+		 wb.write(outputStream);
+
+	 }
+    
+	 driver.findElement(By.id("eventsLink")).click();
+     TakesScreenshot ts = (TakesScreenshot)driver;
+     File source = ts.getScreenshotAs(OutputType.FILE);
+     FileUtils.copyFile(source, new File("./Screenshots/Screen.png"));
+     System.out.println("the Screenshot is taken");   
+}
+@AfterClass
+public void close()
+{
+    driver.close();
+}
+
+}
