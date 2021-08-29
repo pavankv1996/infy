@@ -60,10 +60,10 @@ public void filllog() throws InterruptedException, IOException
    		 int size = sheet.getLastRowNum();
    		 for(int i=1; i<size; i++)
    		 {
-   		 String Offers = sheet.getRow (1).getCell (0).getStringCellValue();
-   		 String Offers1 = sheet.getRow (2).getCell (0).getStringCellValue();
-   		 /*String email = sheet.getRow(1).getCell(1).getStringCellValue();
-   		 String mobile = sheet.getRow (1).getCell(2).getStringCellValue();
+   		 String Offers = sheet.getRow (i).getCell (0).getStringCellValue();
+   		 String Offers1 = sheet.getRow (i).getCell (1).getStringCellValue();
+   		 /*String email = sheet.getRow(i).getCell(2).getStringCellValue();
+   		 String mobile = sheet.getRow (i).getCell(3).getStringCellValue();
 
    		 String ddindex = sheet.getRow(1).getCell (3).getStringCellValue();
 
