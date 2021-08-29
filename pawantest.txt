@@ -1,0 +1,44 @@
+package solution;
+
+public class Submit {
+
+WebDriver driver = null;
+
+@BeforeClass
+public void init() 
+{
+ System.out.println("webdriver.geko.driver","/home/user/Desktop/geckodriver");
+ driver = new FirefoxDriver();
+ driver.manage().window().maximize();
+ Thread.sleep(2000);
+ driver.get("http:localhost:8080/application/");
+}
+
+@Test()
+public void filllog()
+{
+	String info = driver.getTitle();
+	System.out.println("INFO " +info);
+	Thread.sleep(2000);
+	List<WebElement> links = driver.findElements(By.tagName("a"));
+	System.out.println("Number of hyperlinks:" + links.size());
+	if(driver.getPageSource().contains("Movies in the city"))
+	{
+		System.out.println("Movies in the city is present on the home page");
+	}
+	else
+	{
+		System.out.println("Movies in the city not present on the home page");
+	}
+	driver.findElement(By.id("offersLink")).click();
+	Thread.sleep(2000);
+	WebElement dropdown1= driver.findElement(By.id("offersDropdown"));
+	Select select1 = new Select(dropdown1);
+	select1.selectByVisibleText("Credit Card offers");
+	Thread.sleep(2000);
+	WebElement getRows = driver.findElement(By.xpath("//table[@id='creditCardTable']/tbody"));
+	List<WebElement> TotalRowsList = getRows.findElements(By.tagName("tr"));
+	System.out.println("Number of Rows in the table are : " + TotalRowsList.size());
+	driver.close();
+}
+}
